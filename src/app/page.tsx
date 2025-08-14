@@ -1,103 +1,185 @@
-import Image from "next/image";
+'use client';
+
+import { motion } from 'framer-motion';
+import FeatureCard from '@/components/FeatureCard';
+import ProductListings from '@/components/ProductListings';
+import ProductCatalog from '@/components/ProductCatalog';
+import ProductDetails from '@/components/ProductDetails';
+import ReverseSearch from '@/components/ReverseSearch';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const features = [
+    {
+      title: "Growing",
+      subtitle: "catalogue",
+      description: "Lorem ipsum dolor sit amet. Aliquet urna arcu orci ac.",
+      icon: <ProductListings />,
+      delay: 0
+    },
+    {
+      title: "Beginner",
+      subtitle: "friendly",
+      description: "The site does feature a simple design with a vast catalogue",
+      icon: <ProductCatalog />,
+      delay: 0.2
+    },
+    {
+      title: "Verified",
+      subtitle: "Quality",
+      description: "Lorem ipsum dolor sit amet. Aliquet urna arcu orci ac.",
+      icon: <ProductDetails />,
+      delay: 0.4
+    },
+    {
+      title: "Reverse",
+      subtitle: "image search",
+      description: "Lorem ipsum dolor sit amet. Aliquet urna arcu orci ac.",
+      icon: <ReverseSearch />,
+      delay: 0.6
+    }
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  return (
+    <main className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, #f59e0b 0%, transparent 50%),
+                           radial-gradient(circle at 75% 75%, #d97706 0%, transparent 50%)`
+        }} />
+      </div>
+
+      {/* Animated Grid Background */}
+      <div className="absolute inset-0 opacity-5">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            animate={{
+              opacity: [0.1, 0.3, 0.1],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{
+              duration: 3 + (i % 3),
+              repeat: Infinity,
+              delay: i * 0.2,
+              ease: "easeInOut"
+            }}
+            className="absolute w-px h-full bg-gradient-to-b from-transparent via-amber-500 to-transparent"
+            style={{ left: `${(i * 5) % 100}%` }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10 container mx-auto px-6 py-16">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
+          <motion.h1
+            className="text-5xl md:text-7xl font-bold mb-4 tracking-tight"
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <motion.span
+              animate={{ 
+                textShadow: [
+                  "0 0 20px rgba(245, 158, 11, 0.5)",
+                  "0 0 40px rgba(245, 158, 11, 0.8)",
+                  "0 0 20px rgba(245, 158, 11, 0.5)"
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="text-white"
+            >
+              TRENDING PRODUCTS
+            </motion.span>
+          </motion.h1>
+          
+          <motion.h2
+            className="text-3xl md:text-5xl font-bold"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <span className="text-white">HANDPICKED </span>
+            <motion.span
+              animate={{ 
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+              }}
+              transition={{ duration: 3, repeat: Infinity }}
+              className="gradient-text bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-[length:200%_100%]"
+              style={{
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              FOR YOU:
+            </motion.span>
+          </motion.h2>
+        </motion.div>
+
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              title={feature.title}
+              subtitle={feature.subtitle}
+              description={feature.description}
+              icon={feature.icon}
+              delay={feature.delay}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        {/* Bottom Decoration */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="flex justify-center mt-20"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+          <motion.div
+            animate={{ 
+              width: ["0%", "100%", "0%"]
+            }}
+            transition={{ 
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent max-w-md"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        </motion.div>
+      </div>
+
+      {/* Floating Elements */}
+      {[...Array(8)].map((_, i) => (
+        <motion.div
+          key={i}
+          animate={{
+            y: [-20, 20, -20],
+            x: [-10, 10, -10],
+            opacity: [0.1, 0.3, 0.1]
+          }}
+          transition={{
+            duration: 4 + (i % 3),
+            repeat: Infinity,
+            delay: i * 0.5,
+            ease: "easeInOut"
+          }}
+          className="absolute w-2 h-2 bg-amber-400 rounded-full"
+          style={{
+            top: `${20 + (i * 10) % 60}%`,
+            left: `${10 + (i * 15) % 80}%`
+          }}
+        />
+      ))}
+    </main>
   );
 }
